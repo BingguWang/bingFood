@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+option go_package = "orderModule/proto";
+
+// 内部调用grpc
+service orderService{
+
+}
