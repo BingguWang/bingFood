@@ -10,6 +10,7 @@ func UserRouter(r *gin.Engine) {
     {
         group.POST("/getCode", middleware.GetValidCode())
         group.POST("/getCaptcha", middleware.GetCaptcha())
+        group.POST("/verifyCaptcha", middleware.VerifyCaptcha())
         group.POST("/register", middleware.LoginOrRegUserMiddleware())
         group.POST("/login", middleware.LoginOrRegUserMiddleware())
 

@@ -8,12 +8,13 @@ import (
     "log"
     "time"
 )
+
 /**
-    用于人机校验
- */
+  用于人机校验
+*/
 func NewDefaultRedisStore() *RedisStore {
     return &RedisStore{
-        Expiration: time.Second * 180,
+        Expiration: time.Second * 1800,
         PreKey:     "CAPTCHA_",
     }
 }
@@ -38,12 +39,13 @@ func (rs *RedisStore) Set(id string, value string) error {
 }
 
 func (rs *RedisStore) Get(key string, clear bool) string {
-    val, err := global.GVA_REDIS.Get(rs.Context, key).Result()
+    cli := global.GVA_REDIS
+    val, err := cli.Get(rs.Context, key).Result()
     if err != nil {
         log.Printf("RedisStoreGetError! %v", err.Error())
         return ""
     }
-    if clear {
+    if clear { // captcha是一次性的，验证完应该删掉
         err := global.GVA_REDIS.Del(rs.Context, key).Err()
         if err != nil {
             log.Printf("RedisStoreClearError! %v", err.Error())
@@ -55,6 +57,6 @@ func (rs *RedisStore) Get(key string, clear bool) string {
 
 func (rs *RedisStore) Verify(id, answer string, clear bool) bool {
     key := rs.PreKey + id
-    v := rs.Get(key, clear)
+    v := rs.Get(key, clear) // 组装key去查询value再和用户填写的answer比较
     return v == answer
 }
