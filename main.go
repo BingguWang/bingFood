@@ -1,10 +1,13 @@
 package main
 
 import (
+    "log"
+
     "bingFood/initialize"
     "bingFood/router"
+
     "github.com/gin-gonic/gin"
-    "log"
+
 )
 
 var r *gin.Engine

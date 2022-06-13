@@ -1,16 +1,15 @@
 package utils
 
 import (
+    "bingFood/global"
+    "github.com/pkg/errors"
+    "time"
+
     "context"
     "fmt"
-    "github.com/go-redis/redis/v8"
-    "github.com/pkg/errors"
     "log"
     "math/rand"
-    "orderModule/global"
-    "orderModule/initialize"
     "strconv"
-    "time"
 )
 
 const (
@@ -24,32 +23,17 @@ func SendMsg(mobileNumber string) (string, error) {
     // 如果要防止出现重复，可以放到一个map里，每次先查询map是否存在了，然后每5分钟的时候清除一次map，可以有效减少重复
 
     // 存入redis
-    if err := InsertToRedis(code, mobileNumber); err != nil {
+    key := MsgPrefix + "-" + mobileNumber
+    if err := InsertToRedis(context.TODO(), key, code, time.Minute*5); err != nil {
         log.Printf("insertToRedis failed, err : %v", err)
         return "", err
     }
-    buildContent(code,mobileNumber)
+    buildContent(code, mobileNumber)
     return code, nil // 这里直接返回就假装是用户收到短信了
 }
 
-func buildContent(code,mobile string) string {
-    return "【bingFood】尊敬的"+mobile+"用户，您的验证码为：" + code + "，该验证码 " +strconv.Itoa(MsgValidTime) + " 分钟内有效，请勿泄漏于他人。"
-}
-
-func InsertToRedis(code, mobileNumber string) error {
-    ctx := context.TODO()
-    key := MsgPrefix + "-" + mobileNumber
-    value := code
-    cli := redis.NewClient(&redis.Options{
-        Addr:     initialize.Addr,
-        Password: "wb430481", // no password set
-        DB:       0,          // 0 means to use default DB
-    })
-    if _, err := cli.Set(ctx, key, value, time.Minute*5).Result(); err != nil {
-        log.Printf("set k-v failed, key : %v , value : %v \n", key, value)
-        return err
-    }
-    return nil
+func buildContent(code, mobile string) string {
+    return "【bingFood】尊敬的" + mobile + "用户，您的验证码为：" + code + "，该验证码 " + strconv.Itoa(MsgValidTime) + " 分钟内有效，请勿泄漏于他人。"
 }
 
 func CheckValidCode(code, userMobile string) (bool, error) {

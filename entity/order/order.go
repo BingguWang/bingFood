@@ -1,7 +1,7 @@
 package order
 
 import (
-    "orderModule/entity/user"
+    "bingFood/entity/user"
     "time"
 )
 

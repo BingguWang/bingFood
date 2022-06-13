@@ -1,9 +1,9 @@
 package router
 
 import (
+    "bingFood/router/order"
+    "bingFood/router/user"
     "github.com/gin-gonic/gin"
-    "orderModule/router/order"
-    "orderModule/router/user"
 )
 
 type RouteWork func(*gin.Engine)

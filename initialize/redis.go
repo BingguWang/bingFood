@@ -1,10 +1,10 @@
 package initialize
 
 import (
+    "bingFood/global"
     "context"
     "github.com/go-redis/redis/v8"
     "log"
-    "orderModule/global"
 )
 
 const Addr = "1.14.163.5:6379"
