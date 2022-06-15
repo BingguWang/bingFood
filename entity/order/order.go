@@ -6,16 +6,21 @@ import (
 )
 
 type Order struct {
-    OrderId     uint64
-    OrderNumber string // 订单号，雪花算法生成
-    ShopId      int    // 商家id
-    UserId      string // 用户
-    DeliverNumber   string // 配送单号
+    OrderId        uint64
+    OrderNumber    string                // 订单号，雪花算法生成
+    ShopId         int                   // 商家id
+    UserId         string                // 用户
+    UserMobile     string                // 用户手机号
+    ReceiveAddr    user.UserDeliveryAddr // 接收地址
+    ReceiverMobile string                // 接收人号码
 
-    ProdName string // 逗号拼接，产品名称
-    ProdNum  int    // 商品数量
+    DeliverNumber string // 配送单号
+    ProdName      string // 逗号拼接，产品名称
+    ProdNums      int    // 商品数量
 
     OrderStatus   uint8 // 订单状态
+    DeleteStatus  uint8 // 订单删除状态  0：没有删除， 1：回收站， 2：永久删除
+    PayStatus     uint8 // 支付状态
     RefundStatus  uint8 // 订单退款状态
     DeliverStatus uint8 // 订单配送状态
 
@@ -36,10 +41,8 @@ type Order struct {
     PayAt            time.Time // 订单支付时间
     FinishAt         time.Time // 订单完成时间
     CancelAt         time.Time // 订单取消时间
-    CancelReasonType int       // 订单取消原因
-    DeleteStatus     uint8     // 订单删除状态  0：没有删除， 1：回收站， 2：永久删除
+    CancelApplyAt    time.Time // 订单申请取消时间
+    CancelReasonType uint8       // 订单取消原因
 
-    OrderItems     []OrderItem           // 订单项
-    ReceiveAddr    user.UserDeliveryAddr // 接收地址
-    ReceiverMobile string                // 接收人号码
+    OrderItems []OrderItem // 订单项
 }
