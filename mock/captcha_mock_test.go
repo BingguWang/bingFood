@@ -13,7 +13,7 @@ import (
 func Test_Captcha(t *testing.T) {
     client := &http.Client{}
     var data = strings.NewReader(`{}`)
-    req, err := http.NewRequest("POST", "http://127.0.0.1:8088/user/getCaptcha", data)
+    req, err := http.NewRequest("POST", HostPort + "/user/getCaptcha", data)
     if err != nil {
         log.Fatal(err)
     }
@@ -34,7 +34,7 @@ func Test_Captcha(t *testing.T) {
 func Test_CaptchaVerify(t *testing.T) {
     client := &http.Client{}
     var data = strings.NewReader(`{"id":"o6cGsAYO8CKyjUNMa1SD","verifyValue":"9276"}`)
-    req, err := http.NewRequest("POST", "http://127.0.0.1:8088/user/verifyCaptcha", data)
+    req, err := http.NewRequest("POST", HostPort + "/user/verifyCaptcha", data)
     if err != nil {
         log.Fatal(err)
     }

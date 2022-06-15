@@ -18,7 +18,6 @@ func MySql() {
             log.Printf("open mysql failed, err: %v", e)
         }
     }()
-    dsn := "root:1234@tcp(1.14.163.5:3306)/bingFood?charset=utf8mb4&parseTime=True&loc=Local"
 
     newLogger := logger.New(
         log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
@@ -28,19 +27,25 @@ func MySql() {
             Colorful:      true,          // 彩色打印
         },
     )
+    m := global.GVA_CONFIG.Mysql
 
     db, err := gorm.Open(mysql.New(mysql.Config{
-        DSN:                       dsn,  // DSN data source name
+        DSN:                       m.Dsn(),  // DSN data source name
         DefaultStringSize:         191,  // string 类型字段的默认长度
         SkipInitializeWithVersion: true, // 根据版本自动配置
-    }), &gorm.Config{DisableForeignKeyConstraintWhenMigrating: true,
+    }), &gorm.Config{
+        DisableForeignKeyConstraintWhenMigrating: true,
         QueryFields: true, // 这样查询的时候是用字段名称而不是*
         Logger:      newLogger.LogMode(logger.Info), // 开启info级别的日志
     })
-
     if err != nil {
         panic(err)
     }
+
+    sqlDB, _ := db.DB() // 取出成员SqlDB来配置
+    sqlDB.SetMaxIdleConns(m.MaxIdleConns)
+    sqlDB.SetMaxOpenConns(m.MaxOpenConns)
+
     log.Printf("open mysql success")
 
     global.MYSQL_DB = db

@@ -7,15 +7,15 @@ import (
     "bingFood/router"
 
     "github.com/gin-gonic/gin"
-
 )
 
 var r *gin.Engine
 
 func init() {
     r = router.SetupRouter()
-    initialize.Redis()
+    initialize.Viper()
     initialize.MySql()
+    initialize.Redis()
 }
 func main() {
     if err := r.Run(":8088"); err != nil {

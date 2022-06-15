@@ -18,7 +18,7 @@ import (
 // curl -H "Content-Type:application/json" -XGET http://127.0.0.1:8088/login
 func TestOrder(t *testing.T) {
     client := &http.Client{}
-    req, err := http.NewRequest("GET", "http://127.0.0.1:8088/login", nil)
+    req, err := http.NewRequest("GET", HostPort+"/login", nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -40,7 +40,7 @@ func TestOrder(t *testing.T) {
 // curl -H "Content-Type:application/json" -XGET http://127.0.0.1:8088/orders/123/wang/bing
 func TestOrder2(t *testing.T) {
     client := &http.Client{}
-    req, err := http.NewRequest("GET", "http://127.0.0.1:8088/orders/123/wang/bing", nil)
+    req, err := http.NewRequest("GET", HostPort+"/orders/123/wang/bing", nil)
     if err != nil {
         log.Fatal(err)
     }
@@ -62,7 +62,7 @@ func TestOrder2(t *testing.T) {
 func TestOrder3(t *testing.T) {
     client := &http.Client{}
     var data = strings.NewReader(`userid=1&userName=wd`)
-    req, err := http.NewRequest("POST", "http://127.0.0.1:8088/order/list", data)
+    req, err := http.NewRequest("POST", HostPort+"/order/list", data)
     if err != nil {
         log.Fatal(err)
     }
@@ -84,7 +84,7 @@ func TestOrder3(t *testing.T) {
 func TestOrder4(t *testing.T) {
     client := &http.Client{}
     var data = strings.NewReader(`{"userid":"1" ,"userName":"wbing"}`)
-    req, err := http.NewRequest("POST", "http://127.0.0.1:8088/user/add", data)
+    req, err := http.NewRequest("POST", HostPort+"/user/add", data)
     if err != nil {
         log.Fatal(err)
     }
@@ -121,9 +121,9 @@ func jsonPost(route, postData string) string {
     return string(bodyText)
 }
 
-func urlGet(route, getData string)  {
+func urlGet(route, getData string) {
     client := &http.Client{}
-    req, err := http.NewRequest("GET", "http://127.0.0.1:8088/orders/123/wang/bing", nil)
+    req, err := http.NewRequest("GET", HostPort+"/orders/123/wang/bing", nil)
     if err != nil {
         log.Fatal(err)
     }

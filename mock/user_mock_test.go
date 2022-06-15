@@ -12,7 +12,7 @@ import (
 
 // curl -X POST -H "Content-Type:application/json" -d '{"userMobile":"15759216850"}' http://127.0.0.1:8088/user/getCode
 const (
-    getCodeRoute    = "http://127.0.0.1:8088/user/getCode"
+    getCodeRoute    = HostPort + "/user/getCode"
     getCodePostData = `{"userMobile":"1000"}`
 )
 
@@ -43,7 +43,7 @@ func Test_GetValidCode(t *testing.T) {
 func Test_UserList(t *testing.T) {
     client := &http.Client{}
     var data = strings.NewReader(`{"userid":"1" ,"userName":"wbing"}`)
-    req, err := http.NewRequest("POST", "http://127.0.0.1:8088/user/api/userList", data)
+    req, err := http.NewRequest("POST", HostPort+"/user/api/userList", data)
     if err != nil {
         log.Fatal(err)
     }
@@ -63,11 +63,13 @@ func Test_UserList(t *testing.T) {
     fmt.Printf("%s\n", bodyText)
 }
 
+const HostPort = "http://127.0.0.1:8088"
+
 // curl -X POST -H "Content-Type:application/json" -d '{}' http://127.0.0.1:8088/user/login
 func Test_UserLogin(t *testing.T) {
     client := &http.Client{}
     var data = strings.NewReader(`{"userMobile":"15759216850","isLogin":1}`)
-    req, err := http.NewRequest("POST", "http://127.0.0.1:8088/user/login", data)
+    req, err := http.NewRequest("POST", HostPort+"/user/login", data)
     if err != nil {
         log.Fatal(err)
     }
@@ -83,6 +85,4 @@ func Test_UserLogin(t *testing.T) {
     }
     fmt.Printf("%s\n", bodyText)
 }
-
-
 
