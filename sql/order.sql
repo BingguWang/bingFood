@@ -35,6 +35,7 @@ CREATE TABLE `t_order`
     `pay_at`             datetime                                                          DEFAULT NULL COMMENT '订单支付时间',
     `finish_at`          datetime                                                          DEFAULT NULL COMMENT '订单完成时间，送达则完成',
     `cancel_at`          datetime                                                          DEFAULT NULL COMMENT '订单取消时间',
+    `delete_at`        datetime              DEFAULT NULL COMMENT '删除时间,软删除',
     `cancel_apply_at`    datetime                                                          DEFAULT NULL COMMENT '订单取消申请时间',
     `cancel_reason_type` tinyint(1) unsigned DEFAULT NULL COMMENT '订单取消原因类型',
 

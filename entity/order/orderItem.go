@@ -19,6 +19,9 @@ type OrderItem struct {
     SkuName    string // 商品sku名称
     Price      int    // 商品单价
 
+    PropId   uint64 // 属性id
+    PropName string // 属性名称
+
     IsCommented uint   // 是否评价 0 未评价 1 已评价
     IsGood      uint   // 1 好评 2 差评 3 一般
     Comment     string // 评语
