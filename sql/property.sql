@@ -1,3 +1,5 @@
+DROP TABLE if EXISTS bingFood.t_prod_prop;
+
 CREATE TABLE `t_prod_prop`
 (
     `prop_id`   bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '属性id',

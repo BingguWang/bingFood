@@ -19,7 +19,7 @@ var (
 var MySecret = []byte("bingFood") // 密钥, 不同的算法需要传入密钥数据类型是不一样的!!SigningMethodHS256算法是要传入字节数组作为密钥
 
 func CreateToken(userMobile string) (string, error) {
-    expireTime := time.Now().Add(time.Minute * 5).Unix() //token过期时间
+    expireTime := time.Now().Add(time.Hour * 24).Unix() //token过期时间
     claims := &UserClaims{
         UserMobile: userMobile,
         StandardClaims: jwt.StandardClaims{ // TODO 这些也是配置，后面需要用yaml管理

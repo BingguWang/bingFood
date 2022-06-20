@@ -15,6 +15,8 @@ CREATE TABLE `t_order_item`
     `prop_name`     varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL COMMENT '属性名称',
 
     `price`         int           NOT NULL COMMENT '产品单价',
+    `ori_price`     int           NOT NULL                                       DEFAULT 0 COMMENT '原价',
+
     `prod_amount`   int           NOT NULL                                       DEFAULT 0 COMMENT '仅订单项商品总价',
 
     `user_id`       bigint unsigned NOT NULL COMMENT 'userid',
