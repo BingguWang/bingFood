@@ -15,14 +15,14 @@ CREATE TABLE `t_prod`
 
     `sold_history_num` int                   DEFAULT 0 COMMENT '销量',
     `sold_month_num`   int                   DEFAULT 0 COMMENT '月销量',
-    `total_stock`  int                   DEFAULT 0 COMMENT '总库存',
+    `total_stock`      int                   DEFAULT 0 COMMENT '总库存',
     `score`            int                   DEFAULT 0 COMMENT '可得积分',
     `buy_limit`        int                   DEFAULT '0' COMMENT '限购数量 0 不限制 大于0表示限制数量',
-    `create_at`        datetime              DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_at`        datetime              DEFAULT NULL COMMENT '最近更新时间',
+    `create_at`        datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `update_at`        datetime     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近更新时间',
     `delete_at`        datetime              DEFAULT NULL COMMENT '删除时间,软删除',
 
-    `category_id` bigint unsigned DEFAULT NULL COMMENT '商品分类',
+    `category_id`      bigint unsigned DEFAULT NULL COMMENT '商品分类',
 
     PRIMARY KEY (`prod_id`) USING BTREE,
     KEY                `idx_shop_id` (`shop_id`) USING BTREE

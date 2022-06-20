@@ -3,8 +3,8 @@ package user
 import "time"
 
 /**
-    用户配送地址
- */
+  用户配送地址
+*/
 type UserDeliveryAddr struct {
     UserDeliveryAddrId int
     UserId             string
@@ -17,6 +17,6 @@ type UserDeliveryAddr struct {
     Area               string // 区名称
     Detail             string // 详细地址
 
-    CreateAt time.Time // 创建时间
-    UpdateAt time.Time // 修改时间
+    CreateAt time.Time `json:"createAt" gorm:"autoCreateTime"` // 创建时间
+    UpdateAt time.Time `json:"updateAt" gorm:"autoUpdateTime"` // 修改时间
 }

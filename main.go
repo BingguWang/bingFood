@@ -20,5 +20,6 @@ func init() {
 func main() {
     if err := r.Run(":8088"); err != nil {
         log.Fatal(err)
+
     }
 }

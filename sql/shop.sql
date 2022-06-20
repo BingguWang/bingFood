@@ -15,6 +15,6 @@ CREATE TABLE `t_shop`
 
     `type`                  tinyint(1) unsigned DEFAULT NULL COMMENT '店铺类型',
     `create_at`             datetime                                                      DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_at`             datetime                                                      DEFAULT NULL COMMENT '最近更新时间',
+    `update_at`             datetime                                                      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近更新时间',
     PRIMARY KEY (`shop_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC COMMENT='店铺表';

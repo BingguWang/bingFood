@@ -25,7 +25,7 @@ CREATE TABLE `t_order_item`
     `comment`       varchar(1000) NOT NULL                                       DEFAULT '' COMMENT '评语',
 
     `create_at`     datetime                                                     DEFAULT CURRENT_TIMESTAMP COMMENT '创建订单时间',
-    `update_at`     datetime                                                     DEFAULT NULL COMMENT '订单最近更新时间',
+    `update_at`     datetime                                                     DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '订单最近更新时间',
     `comment_at`    datetime                                                     DEFAULT NULL COMMENT '评论时间',
 
 

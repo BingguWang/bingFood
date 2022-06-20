@@ -6,7 +6,7 @@ import (
 )
 
 type Order struct {
-    OrderId        uint64
+    OrderId        uint64                `gorm:"primaryKey"`
     OrderNumber    string                // 订单号，雪花算法生成
     ShopId         int                   // 商家id
     UserId         string                // 用户
@@ -31,19 +31,19 @@ type Order struct {
     FinalTotal     int // 最终支付金额
     Score          int // 本单可得积分
 
-    PayType     uint8  // 支付方式
-    DeliverType uint8  // 配送方式，1 外卖配送 2 到店自提
+    PayType     uint8 // 支付方式
+    DeliverType uint8 // 配送方式，1 外卖配送 2 到店自提
 
-    Remarks     string // 备注
+    Remarks string // 备注
 
-    CreateAt         time.Time // 创建时间
-    UpdateAt         time.Time // 订单最近更新时间
-    DeleteAt         time.Time
-    PayAt            time.Time // 订单支付时间
-    FinishAt         time.Time // 订单完成时间
-    CancelAt         time.Time // 订单取消时间
-    CancelApplyAt    time.Time // 订单申请取消时间
-    CancelReasonType uint8     // 订单取消原因
+    CreateAt         time.Time `json:"createAt" gorm:"autoCreateTime"` // 创建时间
+    UpdateAt         time.Time `json:"updateAt" gorm:"autoUpdateTime"` // 订单最近更新时间
+    DeleteAt         *time.Time
+    PayAt            *time.Time // 订单支付时间
+    FinishAt         *time.Time // 订单完成时间
+    CancelAt         *time.Time // 订单取消时间
+    CancelApplyAt    *time.Time // 订单申请取消时间
+    CancelReasonType uint8      // 订单取消原因
 
     OrderItems []OrderItem // 订单项
 }

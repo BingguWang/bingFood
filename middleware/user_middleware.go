@@ -3,7 +3,6 @@ package middleware
 import (
     "bingFood/common/response"
     "bingFood/dao"
-
     "bingFood/entity/user"
     "bingFood/entity/user/req"
     "bingFood/utils"
@@ -82,6 +81,7 @@ func LoginByMobile(ctx *gin.Context, userParam *req.UserLoginOrRegisterParam) {
         ctx.Abort()
         return
     }
+    ctx.SetCookie("token", token, 60*5, "", "", false, true)
     response.OkWithDetailed(gin.H{"token": token}, "登录成功", ctx)
     ctx.Next()
     return

@@ -9,7 +9,7 @@ import (
 
 func JWTAuthMiddleware() gin.HandlerFunc {
     return func(ctx *gin.Context) {
-        tokenString := ctx.Request.Header.Get("x-token")
+        tokenString := ctx.Request.Header.Get("token")
 
         if tokenString == "" {
             response.FailWithDetailed(gin.H{"reload": true}, "未登录或非法访问", ctx)

@@ -31,11 +31,11 @@ CREATE TABLE `t_order`
     `remark`             varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '备注',
 
     `create_at`          datetime                                                          DEFAULT CURRENT_TIMESTAMP COMMENT '创建订单时间',
-    `update_at`          datetime                                                          DEFAULT NULL COMMENT '订单最近更新时间',
+    `update_at`          datetime                                                          DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '订单最近更新时间',
     `pay_at`             datetime                                                          DEFAULT NULL COMMENT '订单支付时间',
     `finish_at`          datetime                                                          DEFAULT NULL COMMENT '订单完成时间，送达则完成',
     `cancel_at`          datetime                                                          DEFAULT NULL COMMENT '订单取消时间',
-    `delete_at`        datetime              DEFAULT NULL COMMENT '删除时间,软删除',
+    `delete_at`          datetime                                                          DEFAULT NULL COMMENT '删除时间,软删除',
     `cancel_apply_at`    datetime                                                          DEFAULT NULL COMMENT '订单取消申请时间',
     `cancel_reason_type` tinyint(1) unsigned DEFAULT NULL COMMENT '订单取消原因类型',
 
