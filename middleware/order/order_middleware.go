@@ -1,4 +1,4 @@
-package middleware
+package order
 
 import (
     "bingFood/entity/order"
@@ -7,6 +7,7 @@ import (
     "net/http"
 )
 
+// 新增Order
 func AddOrderMiddleware() gin.HandlerFunc {
     return func(ctx *gin.Context) {
         order := &order.Order{}

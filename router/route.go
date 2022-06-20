@@ -2,6 +2,8 @@ package router
 
 import (
     "bingFood/router/order"
+    "bingFood/router/prod"
+    "bingFood/router/shop"
     "bingFood/router/user"
     "github.com/gin-gonic/gin"
 )
@@ -12,7 +14,7 @@ var routeWorkSlice = []RouteWork{}
 
 func SetupRouter() *gin.Engine {
     r := gin.Default()
-    injectRouteWork(user.UserRouter, order.OrderRouter)
+    injectRouteWork(user.UserRouter, order.OrderRouter, prod.ProdRouter, shop.ShopRouter)
     for _, work := range routeWorkSlice {
         work(r)
     }

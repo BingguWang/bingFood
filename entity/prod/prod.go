@@ -5,7 +5,7 @@ import (
 )
 
 type Prod struct {
-    Id             uint64 `json:"prodId" gorm:"column:prod_id;primary_key;` // 商品id
+    ProdId             uint64 `json:"prodId" gorm:"column:prod_id;primary_key;` // 商品id
     ProdName       string `json:"prodName"`                                 // 商品名称
     ShopId         int    `json:"shopId"`                                   //  店铺id
     OriPrice       int    `json:"oriPrice"`                                 // 原价
@@ -30,8 +30,8 @@ type Prod struct {
 
     CategoryId uint16 `json:"categoryId"` // 商品分类
 
-    Properties []Property `json:"properties" gorm:"foreignKey:ProdId"`
-    Skus       []Sku      `json:"skus" gorm:"foreignKey:ProdId"`
+    Properties []Property `json:"properties" gorm:"foreignKey:ProdId;references:ProdId"`
+    Skus       []Sku      `json:"skus" gorm:"foreignKey:ProdId;references:ProdId"`
 }
 
 func (*Prod) TableName() string {
