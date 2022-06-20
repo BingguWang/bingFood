@@ -9,7 +9,7 @@ type Order struct {
     OrderId        uint64                `gorm:"primaryKey"`
     OrderNumber    string                // 订单号，雪花算法生成
     ShopId         int                   // 商家id
-    UserId         string                // 用户
+    UserId         uint64                // 用户
     UserMobile     string                // 用户手机号
     ReceiveAddr    user.UserDeliveryAddr // 接收地址
     ReceiverMobile string                // 接收人号码

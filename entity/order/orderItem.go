@@ -6,7 +6,7 @@ type OrderItem struct {
     OrderItemId uint64 `gorm:"primaryKey"` // 订单项id
     OrderNumber string // 订单号
 
-    UserId string // 用户
+    UserId uint64 // 用户
     Score  int    // 此订单项拥有的积分
 
     ShopId     int    // 商家id

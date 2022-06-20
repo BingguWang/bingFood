@@ -7,7 +7,7 @@ import "time"
 */
 type UserDeliveryAddr struct {
     UserDeliveryAddrId int
-    UserId             string
+    UserId             uint64
     Receiver           string // 接收人名称
     ProvinceId         int    // 省id
     Province           string // 省名称
