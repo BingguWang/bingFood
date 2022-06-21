@@ -1,3 +1,5 @@
+DROP TABLE if EXISTS bingFood.t_order;
+
 CREATE TABLE `t_order`
 (
     `order_id`           bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '订单ID',
@@ -10,7 +12,7 @@ CREATE TABLE `t_order`
 
     `deliver_number`     varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci   NOT NULL COMMENT '配送单号',
     `prod_name`          varchar(1000) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '产品名称,多个产品将会以逗号隔开',
-    `product_nums`       int                                                               DEFAULT NULL COMMENT '订单商品总数',
+    `prod_nums`          int                                                               DEFAULT NULL COMMENT '订单商品总数',
 
     `order_status`       tinyint(1) unsigned DEFAULT NULL COMMENT '订单状态',
     `delete_status`      tinyint(1) unsigned DEFAULT NULL COMMENT '订单删除状态',

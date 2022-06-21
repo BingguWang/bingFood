@@ -3,7 +3,7 @@ package order
 import "time"
 
 type OrderItem struct {
-    OrderItemId uint64 `gorm:"primaryKey"` // 订单项id
+    OrderItemId uint64 `gorm:"column:order_item_id;primaryKey"` // 订单项id
     OrderNumber string // 订单号
 
     UserId uint64 // 用户
@@ -30,4 +30,8 @@ type OrderItem struct {
     CreateAt  *time.Time `json:"createAt,omitempty" gorm:"autoCreateTime"`
     UpdateAt  *time.Time `json:"updateAt,omitempty" gorm:"autoUpdateTime"`
     CommentAt *time.Time `json:"commentAt,omitempty"`
+}
+
+func (*OrderItem) TableName() string {
+    return "t_order_item"
 }

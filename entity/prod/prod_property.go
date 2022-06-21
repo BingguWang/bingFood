@@ -8,7 +8,7 @@ import (
   属性
 */
 type Property struct {
-    PropId   uint64 `json:"propId" gorm:"primarykey"` // 属性id
+    PropId   uint64 `json:"propId" gorm:"primaryKey"` // 属性id
     PropName string `json:"propName" gorm:""`         // 属性名称
     ShopId   string `json:"shopId" gorm:""`           // 店铺id
     ProdId   uint64 `json:"prodId"`                   // 商品id

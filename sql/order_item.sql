@@ -1,3 +1,5 @@
+DROP TABLE if EXISTS bingFood.t_order_item;
+
 CREATE TABLE `t_order_item`
 (
     `order_item_id` bigint unsigned NOT NULL AUTO_INCREMENT COMMENT '订单项ID',
@@ -6,7 +8,7 @@ CREATE TABLE `t_order_item`
     `shop_id`       int           NOT NULL COMMENT '店铺id',
     `prod_id`       bigint unsigned NOT NULL COMMENT '产品ID',
     `prod_name`     varchar(120)  NOT NULL                                       DEFAULT '' COMMENT '产品名称',
-    `product_nums`  int                                                          DEFAULT NULL COMMENT '商品个数',
+    `prod_nums`     int                                                          DEFAULT NULL COMMENT '商品个数',
     `pic`           varchar(255)  NOT NULL                                       DEFAULT '' COMMENT '产品主图片路径',
     `sku_id`        bigint unsigned NOT NULL COMMENT '产品SkuID',
     `sku_name`      varchar(120)                                                 DEFAULT NULL COMMENT 'sku名称',

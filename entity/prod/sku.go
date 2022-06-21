@@ -5,7 +5,7 @@ import (
 )
 
 type Sku struct {
-    SkuId      uint64 `json:"skuId" gorm:"column:sku_id;primarykey"` // 单品ID
+    SkuId      uint64 `json:"skuId" gorm:"column:sku_id;primaryKey"` // 单品ID
     SkuName    string `json:"skuName" gorm:"sku_name"`               // sku名称
     ProdName   string `json:"prodName"`                              // 商品名称
     ProdId     uint64 `json:"prodId"`                                // 商品ID

@@ -7,7 +7,7 @@ import (
 )
 
 func OrderRouter(r *gin.Engine) {
-    group := r.Group("/order").Use(middleware.JWTAuthMiddleware())
+    group := r.Group("/order", middleware.JWTAuthMiddleware())
     group.POST("/toSettle", order.ToSettleOrderMiddleware())
     group.POST("/confirm", order.ConfirmOrderMiddleware())
 }
