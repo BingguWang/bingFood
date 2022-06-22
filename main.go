@@ -16,6 +16,7 @@ func init() {
     initialize.Viper()
     initialize.MySql()
     initialize.Redis()
+    initialize.Nsq()
 }
 func main() {
     if err := r.Run(":8088"); err != nil {

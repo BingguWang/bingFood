@@ -18,7 +18,7 @@ type Order struct {
     ProdName      string // 逗号拼接，产品名称
     ProdNums      int    // 商品数量
 
-    OrderStatus   uint8 `json:"orderStatus"`   // 订单状态
+    OrderStatus   uint8 `json:"orderStatus"`   // 订单状态 0未支付 1已支付 2商家已接单 3骑手已接单 4已取消 5已完成
     DeleteStatus  uint8 `json:"deleteStatus"`  // 订单删除状态  0：没有删除， 1：回收站， 2：永久删除
     PayStatus     uint8 `json:"payStatus"`     // 支付状态
     RefundStatus  uint8 `json:"refundStatus"`  // 订单退款状态

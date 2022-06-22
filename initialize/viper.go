@@ -7,6 +7,7 @@ import (
     "fmt"
     "github.com/fsnotify/fsnotify"
     "github.com/spf13/viper"
+    "log"
     "os"
 )
 
@@ -44,9 +45,9 @@ func Viper(path ...string) *viper.Viper {
     }
 
     v.OnConfigChange(func(e fsnotify.Event) { // 实时查看配置文件，变化就重新加载
-        fmt.Println("config file changed:", e.Name)
+        log.Printf("config file changed:%v", e.Name)
         if err := v.Unmarshal(&global.GVA_CONFIG); err != nil { // 读取到配置后要解析到定义的配置实体里
-            fmt.Println(err)
+            log.Print(err)
         }
     })
     v.WatchConfig() // 实时查看配置文件，变化就重新加载

@@ -5,6 +5,7 @@ import (
     "bingFood/entity/order"
     "bingFood/entity/order/req"
     "bingFood/entity/order/resp"
+    "bingFood/entity/prod"
     "bingFood/global"
     "bingFood/utils"
     "encoding/json"
@@ -12,6 +13,7 @@ import (
     "github.com/bwmarrin/snowflake"
     "github.com/gin-gonic/gin"
     "github.com/jinzhu/copier"
+    "github.com/nsqio/go-nsq"
     "github.com/pkg/errors"
     "gorm.io/gorm"
     "gorm.io/gorm/clause"
@@ -149,7 +151,7 @@ func ConfirmOrder(ctx *gin.Context, param req.ConfirmOrderReq) (err error) {
     fmt.Println(utils.ToJsonString(od.OrderItems))
     od.Remark = param.Remarks
 
-    // 插入order及order_item
+    // 插入order及order_item,更新库存
     if err = InsertOrder(od); err != nil {
         log.Printf("InsertOrder failed : %v", err.Error())
         return
@@ -159,6 +161,12 @@ func ConfirmOrder(ctx *gin.Context, param req.ConfirmOrderReq) (err error) {
     if _, err = cli.Del(ctx, key).Result(); err != nil {
         return
     }
+
+    // 把订单号存入到MQ里
+    if err = PubOrderNumberToMQ(od.OrderNumber); err != nil {
+        return
+    }
+
     return nil
 }
 
@@ -175,9 +183,38 @@ func InsertOrder(od order.Order) error {
             log.Printf("insert order failed : %v", err.Error())
             return err
         }
+
+        // 更新库存
+        for _, item := range od.OrderItems {
+            if err := tx.Model(&prod.Sku{}).Where("sku_id = ? AND stock - ? >=0 ", item.SkuId, item.ProdNums).Update("stock", gorm.Expr("stock - ?", item.ProdNums)).Error; err != nil {
+                log.Printf("update sku stock failed : %v", err)
+                return err
+            }
+        }
+
         return nil
     }); err != nil {
         return err
     }
+    return nil
+}
+
+func PubOrderNumberToMQ(orderNumber string) (err error) {
+    log.Printf("未支付的订单号存入MQ : %v", orderNumber)
+
+    config := global.NSQ_CONFIG
+    // TODO yaml写配置
+    producer, err := nsq.NewProducer("127.0.0.1:4150", config)
+    if err != nil {
+        return
+    }
+
+    // 5分钟未支付的订单就消费(视为订单取消)掉
+    if err = producer.DeferredPublish("unPayOrder", 5*time.Second, []byte(orderNumber)); err != nil {
+        panic(err)
+        return
+    }
+
+    fmt.Println(time.Now().String())
     return nil
 }
