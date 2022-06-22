@@ -2,12 +2,12 @@ package global
 
 import (
     "bingFood/config"
+    "github.com/bwmarrin/snowflake"
     "github.com/go-redis/redis/v8"
     _ "github.com/go-sql-driver/mysql"
     "github.com/nsqio/go-nsq"
     "github.com/spf13/viper"
     "gorm.io/gorm"
-
 )
 
 var (
@@ -16,6 +16,8 @@ var (
     GVA_VP     *viper.Viper
     GVA_CONFIG config.ServerConfig
     NSQ_CONFIG *nsq.Config
+    SNOW_NODE  *snowflake.Node
+
     //GVA_DB     *gorm.DB
     //GVA_DBList map[string]*gorm.DB
     //// GVA_LOG    *oplogging.Logger

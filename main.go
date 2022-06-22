@@ -17,6 +17,7 @@ func init() {
     initialize.MySql()
     initialize.Redis()
     initialize.Nsq()
+    initialize.SnowFlakeNode()
 }
 func main() {
     if err := r.Run(":8088"); err != nil {

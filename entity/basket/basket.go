@@ -19,7 +19,7 @@ type Basket struct {
     CreateAt time.Time `json:"createAt" gorm:"autoUpdateTime"` // 创建时间
     UpdateAt time.Time `json:"updateAt" gorm:"autoUpdateTime"` // 最近更新时间
 
-    Sku prod.Sku `json:"sku" gorm:"foreignKey:SkuId"`
+    Sku prod.Sku `json:"sku" gorm:"foreignKey:SkuId;references:SkuId"`
 }
 
 func (*Basket) TableName() string {

@@ -38,13 +38,15 @@ func ConfirmOrderMiddleware() gin.HandlerFunc {
         if err := ctx.ShouldBindJSON(&reqParam); err != nil {
             panic(err)
         }
-        if err := ordsev.ConfirmOrder(ctx, reqParam); err != nil {
+
+        orderNumber, err := ordsev.ConfirmOrder(ctx, reqParam)
+        if err != nil {
             log.Printf("提交订单失败 : %v", err.Error())
             response.FailWithMessage("提交订单失败"+err.Error(), ctx)
             ctx.Abort()
             return
         }
-        response.OkWithMessage("提交订单成功", ctx)
+        response.OkWithDetailed(orderNumber, "提交订单成功", ctx)
         ctx.Abort()
         return
     }

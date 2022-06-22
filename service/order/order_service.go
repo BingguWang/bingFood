@@ -9,8 +9,6 @@ import (
     "bingFood/global"
     "bingFood/utils"
     "encoding/json"
-    "fmt"
-    "github.com/bwmarrin/snowflake"
     "github.com/gin-gonic/gin"
     "github.com/jinzhu/copier"
     "github.com/nsqio/go-nsq"
@@ -31,8 +29,6 @@ func SettleOrder(ctx *gin.Context, param req.SettleOrderReq) (res interface{}, e
     if err = db.Where("basket_id IN ? ", param.BasketIds).Preload("Sku").Find(&basketList).Error; err != nil {
         return
     }
-
-    fmt.Println(utils.ToJsonString(basketList))
 
     var (
         oriPriceTotal   int // 原价总和
@@ -82,7 +78,7 @@ func SettleOrder(ctx *gin.Context, param req.SettleOrderReq) (res interface{}, e
 
     claims, _ := ctx.Get("claims")
     userClaims := claims.(*utils.UserClaims)
-    fmt.Println(itemList)
+    //fmt.Println(itemList)
 
     orderRes := resp.SettleOrderResp{
         ShopId:         shopId,
@@ -92,12 +88,12 @@ func SettleOrder(ctx *gin.Context, param req.SettleOrderReq) (res interface{}, e
         DeliverAmount:  deliverFeeTotal,
         ProdAmount:     priceTotal,
         DiscountAmount: discountTotal,
-        FinalTotal:     finalTotal,
+        FinalAmount:    finalTotal,
         OrderItems:     itemList,
         ProdName:       prodName,
     }
 
-    fmt.Println(utils.ToJsonString(orderRes))
+    //fmt.Println(utils.ToJsonString(orderRes))
 
     // 返回的结算内容存到redis里,后面的提交订单时不需要前端再传过来了,提交订单的时候删掉
     cli := global.GVA_REDIS
@@ -110,7 +106,7 @@ func SettleOrder(ctx *gin.Context, param req.SettleOrderReq) (res interface{}, e
     return orderRes, nil
 }
 
-func ConfirmOrder(ctx *gin.Context, param req.ConfirmOrderReq) (err error) {
+func ConfirmOrder(ctx *gin.Context, param req.ConfirmOrderReq) (res interface{}, err error) {
     log.Printf("request args are : %v", utils.ToJsonString(param))
 
     // 去redis取出结算好的订单信息
@@ -134,21 +130,15 @@ func ConfirmOrder(ctx *gin.Context, param req.ConfirmOrderReq) (err error) {
         IgnoreEmpty: true,
         DeepCopy:    true,
     })
+    //fmt.Println(utils.ToJsonString(od.OrderItems))
     od.ReceiveAddr = param.ReceiveAddr
 
     // 生成orderNumber
-    var node *snowflake.Node
-    node, err = snowflake.NewNode(1) // 新建一个节点号为1的node
-    if err != nil {
-        return
-    }
-
-    number := node.Generate()
+    number := global.SNOW_NODE.Generate()
     od.OrderNumber = strconv.FormatInt(number.Int64(), 10)
     for i := 0; i < len(od.OrderItems); i++ {
         od.OrderItems[i].OrderNumber = od.OrderNumber
     }
-    fmt.Println(utils.ToJsonString(od.OrderItems))
     od.Remark = param.Remarks
 
     // 插入order及order_item,更新库存
@@ -167,32 +157,31 @@ func ConfirmOrder(ctx *gin.Context, param req.ConfirmOrderReq) (err error) {
         return
     }
 
-    return nil
+    return od.OrderNumber, nil
 }
 
 func InsertOrder(od order.Order) error {
     log.Printf("order is : %v", utils.ToJsonString(od))
 
     db := global.MYSQL_DB
-    if err := db.Transaction(func(tx *gorm.DB) error {
-        if err := tx.Omit(clause.Associations).Create(&od.OrderItems).Error; err != nil {
+    if err := db.Transaction(func(tx *gorm.DB) (err error) {
+        if err = tx.Omit(clause.Associations).Create(&od.OrderItems).Error; err != nil {
             log.Printf("insert orderItem failed : %v", err.Error())
-            return err
+            return
         }
-        if err := tx.Omit(clause.Associations).Create(&od).Error; err != nil {
+        if err = tx.Omit(clause.Associations).Create(&od).Error; err != nil {
             log.Printf("insert order failed : %v", err.Error())
             return err
         }
 
         // 更新库存
         for _, item := range od.OrderItems {
-            if err := tx.Model(&prod.Sku{}).Where("sku_id = ? AND stock - ? >=0 ", item.SkuId, item.ProdNums).Update("stock", gorm.Expr("stock - ?", item.ProdNums)).Error; err != nil {
+            if err = tx.Model(&prod.Sku{}).Where("sku_id = ? AND stock - ? >=0 ", item.SkuId, item.ProdNums).Update("stock", gorm.Expr("stock - ?", item.ProdNums)).Error; err != nil {
                 log.Printf("update sku stock failed : %v", err)
-                return err
+                return
             }
         }
-
-        return nil
+        return
     }); err != nil {
         return err
     }
@@ -210,11 +199,9 @@ func PubOrderNumberToMQ(orderNumber string) (err error) {
     }
 
     // 5分钟未支付的订单就消费(视为订单取消)掉
-    if err = producer.DeferredPublish("unPayOrder", 5*time.Second, []byte(orderNumber)); err != nil {
+    if err = producer.DeferredPublish("unPayOrder", 2*time.Minute, []byte(orderNumber)); err != nil {
         panic(err)
         return
     }
-
-    fmt.Println(time.Now().String())
     return nil
 }

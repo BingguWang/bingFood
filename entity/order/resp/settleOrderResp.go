@@ -23,7 +23,7 @@ type SettleOrderResp struct {
     DeliverAmount  int // 配送费
     ProdAmount     int // 仅商品总价值
     DiscountAmount int // 优惠金额
-    FinalTotal     int // 最终支付金额
+    FinalAmount    int // 最终支付金额
 
     DeliverType uint8 // 配送方式，1 外卖配送 2 到店自提
 
