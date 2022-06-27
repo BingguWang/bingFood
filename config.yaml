@@ -5,7 +5,7 @@ redis:
   password: 'wb430481'
 
 mysql:
-  host: '1.14.163.5'        # 服务器地址
+  host: mysql        # 服务器地址
   port: '3306'       # 端口
   config: ''       # 高级配置
   db_name: 'bingFood'   # 数据库名
